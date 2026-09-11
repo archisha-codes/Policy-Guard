@@ -1,23 +1,145 @@
+# 🛡️ POLICYGUARD
 
-# POLICYGUARD
+> **Tagline**: Real-Time, Explainable & Privacy-First Financial Compliance Co-Pilot
 
-> **Tagline**: Real-Time, Explainable & Privacy-First Financial Compliance
-
-POLICYGUARD is an AI-driven, real-time financial compliance co-pilot for banks, fintechs, payment gateways, and regulated institutions. It combines **Deterministic Rules**, **Self-Hosted Local RAG**, **AI Compliance Intelligence**, **PII Masking & Tokenization**, **Explainable Risk Decomposition**, **Human-in-the-Loop Governance**, **Cryptographic Audit Trails**, and **Regulatory Drift Detection**.
-
-> [!IMPORTANT]
-> **PolicyGuard Philosophy**: *"AI assists compliance officers; AI does not replace them."*
-> PolicyGuard is a compliance co-pilot and does not replace qualified compliance professionals or legal advice.
+POLICYGUARD is an enterprise-grade, real-time financial compliance co-pilot for banks, fintechs, payment gateways, and regulated financial institutions. It combines **Deterministic Rule Engines**, **Self-Hosted Local Vector RAG**, **Explainable AI Compliance Reasoning**, **PII Masking & Tokenization**, **Human-in-the-Loop Governance**, **Cryptographic Audit Trails**, and **Regulatory Drift Detection**.
 
 ---
 
-## 🚀 Key Differentiators & Principles
+## 🌐 Live Production Deployments
 
-1. **Deterministic Rules + RAG Evidence + AI Reasoning**: No hallucinated compliance rules. AI decisions are strictly grounded in retrieved RBI/PMLA Master Circular evidence.
-2. **Zero-Cost / Self-Hosted Deployability**: Runs 100% locally and on free-tier Render (backend) and Vercel (frontend) without requiring paid API keys or cloud vector databases.
-3. **PII-First Architecture**: Direct identifiers (PAN, Aadhaar, Account Numbers, Names) are tokenized via Fernet encryption & SHA-256 hashes *before* hitting AI models or log files.
-4. **Human-in-the-Loop & Cryptographic Ledger**: Compliance officers can Approve, Reject, or Override AI verdicts. Every officer decision is cryptographically signed into an append-only ledger using SHA-256 hash chaining.
-5. **No OnDemand Dependencies**: PolicyGuard is 100% clean of OnDemand APIs, SDKs, or cloud lock-in.
+| Component | Status | URL |
+| :--- | :--- | :--- |
+| **Frontend Application** | 🟢 Live | [https://policy-guard-livid.vercel.app](https://policy-guard-livid.vercel.app) |
+| **Backend API** | 🟢 Live | [https://policy-guard.onrender.com](https://policy-guard.onrender.com) |
+| **Interactive API Specs** | 🟢 Swagger UI | [https://policy-guard.onrender.com/docs](https://policy-guard.onrender.com/docs) |
+
+---
+
+## 🚨 Problem Statement & 💡 Solution
+
+### The Challenge
+1. **Skyrocketing Regulatory Burden**: Financial institutions struggle with hundreds of evolving RBI, PMLA, FATF, and KYC/AML circulars and guidelines.
+2. **High False Positive Alert Fatigue**: Traditional legacy rule engines generate massive false positives (>90%), overwhelming compliance officers and delaying legitimate transactions.
+3. **Black-Box Cloud AI & Hallucinations**: Standard LLMs hallucinate non-existent compliance rules and lack auditability, citations, and regulatory explainability.
+4. **PII Data Privacy Risks**: Sending unmasked customer PANs, Aadhaar numbers, and bank account numbers to cloud AI providers violates financial data sovereignty laws.
+
+### The PolicyGuard Solution
+> [!IMPORTANT]
+> **PolicyGuard Philosophy**: *"AI assists compliance officers; AI does not replace them."*
+
+PolicyGuard addresses these challenges through a multi-layered hybrid architecture:
+- **Zero-Cost / Self-Hosted RAG**: 100% self-hosted regulatory knowledge retrieval with pre-chunked RBI Master Circulars and local vector embeddings.
+- **Zero-Trust PII Masking**: Direct identifiers are Fernet-encrypted and tokenized *before* hitting AI engines or log files.
+- **Deterministic + AI Hybrid**: High-risk pattern rules run instantly (<5ms) while complex ambiguous edge cases are evaluated by evidence-grounded AI reasoning.
+- **Cryptographic Audit Ledger**: Every decision is cryptographically signed into an append-only ledger using SHA-256 hash chaining.
+
+---
+
+## 📸 Platform Showcase & UI Screenshots
+
+### 1. Landing Page & Enterprise Overview
+> Real-Time. Explainable. Regulator-Ready Compliance Platform.
+
+![PolicyGuard Landing Hero](docs/images/landing_hero.png)
+
+![Enterprise-Grade AI Compliance Features](docs/images/enterprise_features.png)
+
+![How PolicyGuard Works & Built for Enterprise Trust](docs/images/how_it_works.png)
+
+---
+
+### 2. Main Executive Dashboard
+> Real-time compliance rate monitoring, daily volume metrics, active alert counters, and quick actions.
+
+![Dashboard Overview](docs/images/dashboard.png)
+
+---
+
+### 3. Real-Time Transactions Monitoring & AI Evidence Drawer
+> Ingestion monitoring with status filtering and grounded RBI circular AI analysis drawers.
+
+![Transaction Monitoring](docs/images/transaction_monitoring.png)
+
+---
+
+### 4. Alerts & Notifications Center
+> High-risk transaction alert queue, smurfing/structuring warnings, and escalation management.
+
+![Alerts and Notifications](docs/images/alerts.png)
+
+---
+
+### 5. Policy Drift & Regulatory Amendment Tracking
+> Detects circular amendments and flags historical transaction logs affected by regulatory policy changes.
+
+![Policy Drift Detection](docs/images/policy_drift.png)
+
+---
+
+### 6. Cryptographic Audit Ledger & Reports
+> Immutable append-only audit trail with SHA-256 hash chaining for full regulatory audit readiness.
+
+![Cryptographic Audit Logs](docs/images/audit_logs.png)
+
+---
+
+## 🛠️ Feature Breakdown: What Each Feature Does & How
+
+### 1. PII Masking & Tokenization Vault (`agents/pii_masking_agent.py`)
+- **What it does**: Automatically detects Indian PAN (`XXXXX1234X`), Aadhaar (`XXXX XXXX 9012`), Bank Account Numbers, and Customer Names.
+- **How it works**: Uses regex pattern matchers combined with Fernet symmetric encryption and SHA-256 HMAC hashing to tokenize data into reversible tokens (`MASKED_PAN_...`) before sending text to LLMs or storing in databases.
+
+### 2. Fast-Path Deterministic Rule Engine (`agents/rule_engine.py`)
+- **What it does**: Instantly catches known high-risk regulatory violations without waiting for LLM responses.
+- **How it works**: Evaluates rules in <5ms:
+  - High-value cash/transfer without verified KYC (>₹1,00,000)
+  - OFAC Sanctions & PEP watchlist match
+  - High-risk jurisdiction checks
+  - Smurfing / Structuring patterns (multiple transfers in ₹9,000–₹11,000 window)
+
+### 3. Self-Hosted Local RAG Engine (`rag_pipeline.py`)
+- **What it does**: Provides evidence-grounded regulatory retrieval without requiring paid external vector databases.
+- **How it works**: Loads pre-chunked RBI KYC/AML Master Circulars (`rag_prep/chunked_output.json`) and pre-computed 768-dim vector embeddings (`rag_prep/chunk_embeddings.json`) into an in-memory cosine similarity store.
+
+### 4. AI Compliance Co-Pilot & Citation Engine (`agents/compliance_agent.py`)
+- **What it does**: Analyzes complex, ambiguous transactions and generates human-readable explanations.
+- **How it works**: Synthesizes the transaction context with retrieved RBI circular evidence (`REF-1`, `REF-4`) using Google Gemini / local LLM fallback, guaranteeing zero hallucinated compliance rules.
+
+### 5. Human-in-the-Loop Governance (`app.py` & `components/`)
+- **What it does**: Empowers compliance officers to Approve, Reject, or Override AI risk verdicts.
+- **How it works**: Officers record custom rationale notes. Overrides automatically feed into the feedback loop system (`models.py`) to tune future decision thresholds.
+
+### 6. Cryptographic Hash-Chain Audit Ledger (`services/audit_logger.py`)
+- **What it does**: Guarantees tamper-proof regulatory audit logs for bank examiners.
+- **How it works**: Maintains an append-only ledger where each log entry contains `current_hash = SHA256(previous_hash + entry_data)`. Any retroactive data alteration breaks the cryptographic verification chain.
+
+### 7. Policy Drift Detection Engine (`services/policy_drift_detector.py`)
+- **What it does**: Monitors regulatory circular amendments and re-evaluates historical transactions.
+- **How it works**: When an RBI circular is updated, the engine scans past transaction logs to identify accounts affected by retroactively changed risk thresholds.
+
+---
+
+## 🧰 Tech Stack Used
+
+### Frontend Architecture
+- **Framework**: React 18 with TypeScript
+- **Build Tool**: Vite
+- **Styling**: Vanilla CSS, TailwindCSS, Glassmorphism UI components, Shadcn UI primitives
+- **Animations**: Framer Motion
+- **Data Visualization**: Recharts
+- **Icons**: Lucide React
+- **HTTP Client**: Native Fetch API with custom JWT interceptor
+
+### Backend Architecture
+- **API Framework**: FastAPI (Python 3.11)
+- **Web Server**: Uvicorn
+- **ORM & Database**: SQLAlchemy (SQLite for local/zero-cost, PostgreSQL support)
+- **Data Validation**: Pydantic v2
+- **Security & Auth**: PyJWT, OAuth2 Bearer, Cryptography (Fernet & SHA-256)
+- **ML / Vector Retrieval**: Sentence-Transformers (`all-mpnet-base-v2` embeddings), NumPy in-memory vector search
+- **Streaming & Integrations**: Boto3 (AWS Kinesis Streaming Producer & Consumer)
+- **LLM Integration**: Google Gemini API client with fallback offline reasoning engine
 
 ---
 
@@ -65,49 +187,45 @@ Validation & Normalization  Tokenization Vault       Self-Hosted Local Vector RA
 
 ---
 
-## 🛠️ Core Features
-
-- **Transaction Ingestion & Validation**: Ingests transactions with schema validation and synthetic demo datasets.
-- **PII Masking & Security**: Detects and tokenizes Indian PAN (`XXXXX1234X`), Aadhaar (`XXXX XXXX 9012`), and Bank Account Numbers (`XXXXXXXXX3456`).
-- **Deterministic Rule Engine**: High-value transactions without KYC (>₹1,00,000), OFAC entity match, high-risk country check, duplicate transaction detection, and smurfing/structuring patterns (₹9,000-11,000 range).
-- **Self-Hosted Local RAG**: Loads pre-chunked RBI Master Circular KYC/AML circulars (`rag_prep/chunked_output.json`) and pre-computed vector embeddings (`rag_prep/chunk_embeddings.json`) locally. No paid vector DB required.
-- **Rule-Grounded AI Fallback**: Operates 100% offline using local evidence-grounded inference if external AI keys are absent.
-- **Human-in-the-Loop Governance**: Offers Approve, Reject, and Override actions. Stores officer notes and records original vs human decision.
-- **Cryptographic Audit Ledger**: Immutable append-only audit trail with SHA-256 hash chaining.
-- **Policy Drift & Regulatory Updates**: Tracks regulatory circular amendments and affected transaction logs.
-- **Regulatory Knowledge Assistant**: RAG-powered chatbot answering regulatory queries with cited RBI circular sections.
-
----
-
 ## 📂 Repository Layout
 
 ```
 POLICYGUARD/
+ ├── DEPLOYMENT.md                 # Complete cloud & Docker deployment guide
+ ├── docker-compose.yml            # Multi-container local/VPS deployment manifest
+ ├── docs/
+ │    └── images/                  # UI Screenshots & visual diagrams
  ├── backend/
  │    ├── app.py                   # FastAPI REST API & endpoints
  │    ├── database.py              # SQLAlchemy DB setup (SQLite / PostgreSQL)
  │    ├── models.py                # Database entities (Transaction, ComplianceLog, FeedbackLoop)
  │    ├── rag_pipeline.py          # Self-hosted Local Vector RAG Engine
+ │    ├── Dockerfile               # Backend production container configuration
  │    ├── render.yaml              # Render deployment configuration
- │    ├── Procfile                 # Render start command
+ │    ├── Procfile                 # Process start command
  │    ├── requirements.txt         # Python dependencies
  │    ├── agents/
- │    │    ├── compliance_agent.py # AI Co-Pilot & Rule-Grounded Fallback Engine
+ │    │    ├── compliance_agent.py # AI Co-Pilot & Rule-Grounded Engine
  │    │    ├── rule_engine.py      # Fast-path Deterministic Rule Engine
  │    │    ├── pii_masking_agent.py # PII Detection & Tokenization Agent
  │    │    └── rag_bridge.py       # RAG Context & Citation Retriever
  │    └── services/
  │         ├── audit_logger.py     # Cryptographic SHA-256 Hash Chain Audit Logger
  │         ├── zero_trust_auth.py  # JWT & Role-Based Access Control (RBAC)
- │         └── gemini_client.py    # Optional Gemini client
+ │         ├── policy_drift_detector.py # Policy drift amendment analyzer
+ │         └── gemini_client.py    # Gemini LLM client integration
  ├── frontend/
+ │    ├── Dockerfile               # Frontend multi-stage Nginx container
+ │    ├── nginx.conf               # SPA rewrite configuration
  │    ├── vercel.json              # Vercel deployment configuration
  │    ├── package.json             # React dependencies & scripts
  │    └── src/
- │         ├── App.tsx             # Main routing
- │         ├── pages/              # Dashboard, Transactions, Decision View, Policy Drift, Audit Logs
- │         ├── components/         # Glassmorphism UI cards, badges, Knowledge Assistant Modal
- │         └── services/api.ts     # Backend API integration
+ │         ├── App.tsx             # Main router
+ │         ├── config/
+ │         │    └── apiConfig.ts   # Dynamic API URL resolver
+ │         ├── pages/              # Dashboard, Transactions, Alerts, Policy Drift, Audit Logs
+ │         ├── components/         # Glassmorphism UI cards, badges, Chat Widget
+ │         └── services/api.ts     # Backend REST API service integration
  ├── rag_prep/
  │    ├── chunked_output.json      # Pre-chunked RBI Master Circular guidelines
  │    └── chunk_embeddings.json    # Pre-computed 768-dim vector embeddings
@@ -123,49 +241,59 @@ POLICYGUARD/
 
 ```bash
 cd backend
+
+# Create virtual environment
 python -m venv venv
+
+# Activate environment
 # On Windows:
 .\venv\Scripts\activate
 # On Linux/macOS:
 source venv/bin/activate
 
+# Install dependencies
 pip install -r requirements.txt
+
+# Initialize database schema
 python -c "from database import init_db; init_db()"
-python -m uvicorn app:app --host 0.0.0.0 --port 8000
+
+# Start FastAPI development server
+python -m uvicorn app:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-Backend will start at `http://localhost:8000`. Health endpoint: `http://localhost:8000/api/health`.
+- **Backend API**: `http://localhost:8000`
+- **Health Check**: `http://localhost:8000/api/health`
+- **API Swagger Documentation**: `http://localhost:8000/docs`
+
+---
 
 ### 2. Frontend Setup (React + Vite)
 
 ```bash
 cd frontend
+
+# Install npm dependencies
 npm install
+
+# Start Vite dev server
 npm run dev
 ```
 
-Frontend will start at `http://localhost:5173`.
+- **Frontend Dashboard**: `http://localhost:5173`
 
 ---
 
-## 🌐 Deployment Configuration
+### 3. One-Command Docker Compose Setup
 
-### Deploying Backend to Render
-1. Connect repository to **Render**.
-2. Select **Web Service** with directory `backend`.
-3. Set build command: `pip install -r requirements.txt`.
-4. Set start command: `uvicorn app:app --host 0.0.0.0 --port $PORT`.
-5. Set environment variable `ENVIRONMENT=production` and optional `DATABASE_URL`.
+```bash
+docker-compose up --build -d
+```
 
-### Deploying Frontend to Vercel
-1. Connect repository to **Vercel**.
-2. Set Root Directory to `frontend`.
-3. Framework Preset: **Vite**.
-4. Set Environment Variable: `VITE_API_BASE_URL=https://your-backend.onrender.com`.
+- **Frontend**: `http://localhost:3000`
+- **Backend API**: `http://localhost:8000`
 
 ---
 
-## ⚠️ Limitations & Legal Disclaimer
+## ⚠️ Legal Disclaimer
 
-*PolicyGuard is a financial compliance co-pilot designed to assist compliance officers. PolicyGuard does not provide legal advice, guaranteed regulatory immunity, or legal certification. Compliance officers remain accountable for all final institutional compliance decisions.*
-
+*PolicyGuard is a financial compliance co-pilot designed to assist qualified compliance officers and financial auditors. PolicyGuard does not provide legal advice, legal certification, or guaranteed regulatory immunity. Compliance officers and institution officers remain accountable for all final institutional compliance decisions.*
