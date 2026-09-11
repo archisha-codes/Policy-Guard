@@ -38,8 +38,15 @@ PolicyGuard addresses these challenges through a multi-layered hybrid architectu
 
 ## 📸 Platform Showcase & UI Screenshots
 
-### 1. Landing Page & Enterprise Overview
-> Real-Time. Explainable. Regulator-Ready Compliance Platform.
+### 1. Secure Authentication & Role Selection Portal
+> Multi-role access control for Compliance Officers, Auditors, Managers, and Admins.
+
+![PolicyGuard Login & Auth Portal](docs/images/login_page.png)
+
+---
+
+### 2. Landing Page & Enterprise Intelligence
+> Real-time compliance intelligence banner, key performance metrics (99.9% accuracy, <50ms decision latency, 500+ regulations covered).
 
 ![PolicyGuard Landing Hero](docs/images/landing_hero.png)
 
@@ -49,43 +56,43 @@ PolicyGuard addresses these challenges through a multi-layered hybrid architectu
 
 ---
 
-### 2. Main Executive Dashboard
-> Real-time compliance rate monitoring, daily volume metrics, active alert counters, and quick actions.
+### 3. Main Executive Dashboard Overview
+> Live transaction counters, compliance rate metrics (33.3%), active alerts queue, and recent activity logs.
 
 ![Dashboard Overview](docs/images/dashboard.png)
 
 ---
 
-### 3. Real-Time Transactions Monitoring & AI Evidence Drawer
-> Ingestion monitoring with status filtering and grounded RBI circular AI analysis drawers.
+### 4. Real-Time Transaction Monitoring
+> Live transaction table with status badges (Compliant / Non-Compliant), PII masking (`CUST-441829`), risk scores, and grounded RBI circular AI analysis drawers.
 
 ![Transaction Monitoring](docs/images/transaction_monitoring.png)
 
 ---
 
-### 4. Alerts & Notifications Center
-> Real-time compliance alert queue, smurfing/structuring warnings, and officer action buttons (`Approve`, `Email User`, `Resolve`).
+### 5. Alerts & Notifications Center
+> Backend compliance alert queue, smurfing & KYC violation warnings, and officer action buttons (`Approve`, `Email User`, `Resolve`).
 
 ![Alerts and Notifications](docs/images/alerts.png)
 
 ---
 
-### 5. Policy Drift & Regulatory Amendment Tracking
+### 6. Policy Drift & Regulatory Updates
 > Live monitoring of regulatory circular amendments, simulation triggers, and tracking affected historical transactions.
 
 ![Policy Drift Detection](docs/images/policy_drift.png)
 
 ---
 
-### 6. Cryptographic Audit Ledger & Reports
+### 7. Cryptographic Audit Logs & Reports
 > Immutable append-only audit trail with blue lock icons representing SHA-256 hash chaining, database/simulation toggles, and PDF/CSV export capabilities.
 
 ![Cryptographic Audit Logs](docs/images/audit_logs.png)
 
 ---
 
-### 7. Regulatory Knowledge Assistant (RAG Chatbot Modal)
-> AI compliance chatbot grounded in official RBI Master Circulars, PMLA Guidelines, and KYC frameworks with inline section citations.
+### 8. Regulatory Knowledge Assistant (RAG Chatbot Modal)
+> AI compliance chatbot grounded in official RBI Master Circulars, PMLA Guidelines, and KYC frameworks with inline section citations (`[REF-1] RBI Circular`).
 
 ![Regulatory Knowledge Assistant Chatbot](docs/images/chatbot.png)
 
@@ -205,7 +212,7 @@ POLICYGUARD/
  ├── DEPLOYMENT.md                 # Complete cloud & Docker deployment guide
  ├── docker-compose.yml            # Multi-container local/VPS deployment manifest
  ├── docs/
- │    └── images/                  # UI Screenshots & visual diagrams
+ │    └── images/                  # Authentic application UI screenshots
  ├── backend/
  │    ├── app.py                   # FastAPI REST API & endpoints
  │    ├── database.py              # SQLAlchemy DB setup (SQLite / PostgreSQL)
