@@ -1,0 +1,53 @@
+# FastAPI & Web Framework
+fastapi
+uvicorn
+gunicorn
+pydantic
+pydantic-settings
+python-multipart
+
+# AWS Services
+boto3
+botocore
+
+# Database
+sqlalchemy
+alembic
+psycopg2-binary
+aiofiles
+
+# Vector Store & Search
+opensearch-py
+opensearch_client
+scikit-learn
+scipy
+numpy
+
+# PDF & Document Processing
+pdf2image
+pypdf
+pdfplumber
+
+# Stream Processing
+python-json-logger
+loguru
+
+# Async & Concurrency
+aiohttp
+asyncio-contextmanager
+
+# Security & Auth
+python-jose[cryptography]
+pyJWT
+passlib[bcrypt]
+bcrypt
+cryptography
+
+# Utilities & AI Client
+python-dotenv
+requests
+httpx
+pyyaml
+click
+feedparser
+google-generativeai
