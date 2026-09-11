@@ -41,7 +41,7 @@ PolicyGuard addresses these challenges through a multi-layered hybrid architectu
 ### 1. Secure Authentication & Role Selection Portal
 > Multi-role access control for Compliance Officers, Auditors, Managers, and Admins.
 
-![PolicyGuard Login & Auth Portal](docs/images/login_page.png).
+![PolicyGuard Login & Auth Portal](docs/images/login_page.png)
 
 ---
 
