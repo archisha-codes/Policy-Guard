@@ -1,6 +1,5 @@
-// frontend/src/services/api.ts
-
 import { AuthService } from './auth';
+import { getApiBaseUrl } from '@/config/apiConfig';
 import { 
   ApiTransaction, 
   DashboardStats, 
@@ -9,7 +8,6 @@ import {
   AnalyzeRequest 
 } from '@/types/api';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 
 export interface AlertActionPayload {
   transaction_id: string;
@@ -22,6 +20,10 @@ export interface AlertActionPayload {
 ========================= */
 
 class ApiService {
+  private get baseUrl(): string {
+    return getApiBaseUrl();
+  }
+
   private getHeaders(includeAuth: boolean = false): HeadersInit {
     const headers: HeadersInit = {
       'Content-Type': 'application/json',
@@ -52,7 +54,7 @@ class ApiService {
 
   // --- Auth ---
   async login(email: string, role: string): Promise<AuthResponse> {
-    const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
+    const res = await fetch(`${this.baseUrl}/api/auth/login`, {
       method: 'POST',
       headers: this.getHeaders(false),
       body: JSON.stringify({ email, role }),
@@ -60,10 +62,11 @@ class ApiService {
     return this.handleResponse(res);
   }
 
+
   // --- Dashboard Data ---
   async fetchStats(): Promise<DashboardStats> {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/stats`, {
+      const response = await fetch(`${this.baseUrl}/api/stats`, {
         method: 'GET',
         headers: this.getHeaders(true),
       });
@@ -82,7 +85,7 @@ class ApiService {
   // --- Transactions ---
   async fetchTransactions(limit = 50, offset = 0): Promise<ApiTransaction[]> {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/transactions?limit=${limit}&offset=${offset}`, {
+      const response = await fetch(`${this.baseUrl}/api/transactions?limit=${limit}&offset=${offset}`, {
         method: 'GET',
         headers: this.getHeaders(true),
       });
@@ -95,7 +98,7 @@ class ApiService {
 
   // --- Alerts ---
   async fetchAlerts(): Promise<ApiTransaction[]> {
-    const res = await fetch(`${API_BASE_URL}/api/alerts`, {
+    const res = await fetch(`${this.baseUrl}/api/alerts`, {
       method: 'GET',
       headers: this.getHeaders(true),
     });
@@ -104,7 +107,7 @@ class ApiService {
 
   // --- Audit Logs ---
   async fetchAuditLogs(): Promise<ApiAuditLog[]> {
-    const res = await fetch(`${API_BASE_URL}/api/audit-logs`, {
+    const res = await fetch(`${this.baseUrl}/api/audit-logs`, {
       method: 'GET',
       headers: this.getHeaders(true),
     });
@@ -113,7 +116,7 @@ class ApiService {
 
   // --- Analysis ---
   async analyzeTransaction(payload: AnalyzeRequest): Promise<any> {
-    const res = await fetch(`${API_BASE_URL}/api/analyze`, {
+    const res = await fetch(`${this.baseUrl}/api/analyze`, {
       method: 'POST',
       headers: this.getHeaders(true),
       body: JSON.stringify(payload),
@@ -123,7 +126,7 @@ class ApiService {
 
   // --- Traffic Simulation ---
   async simulateTraffic(scenario: string): Promise<any> {
-    const res = await fetch(`${API_BASE_URL}/api/simulate/traffic`, {
+    const res = await fetch(`${this.baseUrl}/api/simulate/traffic`, {
       method: 'POST',
       headers: this.getHeaders(true),
       body: JSON.stringify({ scenario }),
@@ -133,7 +136,7 @@ class ApiService {
 
   // --- Simulation Cases ---
   async fetchSimulationCases(): Promise<any> {
-    const res = await fetch(`${API_BASE_URL}/api/simulation/cases`, {
+    const res = await fetch(`${this.baseUrl}/api/simulation/cases`, {
       method: 'GET',
       headers: this.getHeaders(true),
     });
@@ -141,7 +144,7 @@ class ApiService {
   }
 
   async simulateCase(caseId: number): Promise<any> {
-    const res = await fetch(`${API_BASE_URL}/api/simulation/simulate/${caseId}`, {
+    const res = await fetch(`${this.baseUrl}/api/simulation/simulate/${caseId}`, {
       method: 'POST',
       headers: this.getHeaders(true),
     });
@@ -149,7 +152,7 @@ class ApiService {
   }
 
   async fetchSimulationTransactions(): Promise<any> {
-    const res = await fetch(`${API_BASE_URL}/api/simulation/transactions`, {
+    const res = await fetch(`${this.baseUrl}/api/simulation/transactions`, {
       method: 'GET',
       headers: this.getHeaders(true),
     });
@@ -157,7 +160,7 @@ class ApiService {
   }
 
   async fetchSimulationAuditLogs(): Promise<any> {
-    const res = await fetch(`${API_BASE_URL}/api/simulation/audit`, {
+    const res = await fetch(`${this.baseUrl}/api/simulation/audit`, {
       method: 'GET',
       headers: this.getHeaders(true),
     });
@@ -165,7 +168,7 @@ class ApiService {
   }
 
   async fetchSimulationBalance(): Promise<any> {
-    const res = await fetch(`${API_BASE_URL}/api/simulation/balance`, {
+    const res = await fetch(`${this.baseUrl}/api/simulation/balance`, {
       method: 'GET',
       headers: this.getHeaders(true),
     });
@@ -174,7 +177,7 @@ class ApiService {
 
   // --- Policy Drift ---
   async checkDrift(simulate: boolean = false): Promise<any> {
-    const res = await fetch(`${API_BASE_URL}/api/admin/check-drift?simulate=${simulate}`, {
+    const res = await fetch(`${this.baseUrl}/api/admin/check-drift?simulate=${simulate}`, {
       method: 'POST',
       headers: this.getHeaders(true),
     });
@@ -183,7 +186,7 @@ class ApiService {
 
   // --- Policy Drift Updates ---
   async fetchPolicyUpdates(): Promise<any> {
-    const res = await fetch(`${API_BASE_URL}/api/policy-drift/updates`, {
+    const res = await fetch(`${this.baseUrl}/api/policy-drift/updates`, {
       method: 'GET',
       headers: this.getHeaders(true),
     });
@@ -192,7 +195,7 @@ class ApiService {
 
   // --- Policy Drift Affected Transactions ---
   async fetchAffectedTransactions(regId: string): Promise<any> {
-    const res = await fetch(`${API_BASE_URL}/api/policy-drift/affected/${regId}`, {
+    const res = await fetch(`${this.baseUrl}/api/policy-drift/affected/${regId}`, {
       method: 'GET',
       headers: this.getHeaders(true),
     });
@@ -201,7 +204,7 @@ class ApiService {
 
   // --- Retry Gemini Analysis ---
   async retryAnalysis(transactionId: string): Promise<any> {
-    const res = await fetch(`${API_BASE_URL}/api/analyze/retry/${transactionId}`, {
+    const res = await fetch(`${this.baseUrl}/api/analyze/retry/${transactionId}`, {
       method: 'POST',
       headers: this.getHeaders(true),
     });
@@ -210,7 +213,7 @@ class ApiService {
 
   // --- Alert Actions ---
   async logAlertAction(payload: AlertActionPayload): Promise<any> {
-    const res = await fetch(`${API_BASE_URL}/api/alerts/action`, {
+    const res = await fetch(`${this.baseUrl}/api/alerts/action`, {
       method: 'POST',
       headers: this.getHeaders(true),
       body: JSON.stringify(payload),
@@ -226,7 +229,7 @@ class ApiService {
     human_verdict: string;
     notes: string;
   }): Promise<any> {
-    const res = await fetch(`${API_BASE_URL}/api/feedback`, {
+    const res = await fetch(`${this.baseUrl}/api/feedback`, {
       method: 'POST',
       headers: this.getHeaders(true),
       body: JSON.stringify(payload),
@@ -236,7 +239,7 @@ class ApiService {
 
   // --- RAG Knowledge Base Query ---
   async queryRagKnowledge(query: string): Promise<any> {
-    const res = await fetch(`${API_BASE_URL}/api/rag/query`, {
+    const res = await fetch(`${this.baseUrl}/api/rag/query`, {
       method: 'POST',
       headers: this.getHeaders(true),
       body: JSON.stringify({ query }),
@@ -246,7 +249,7 @@ class ApiService {
 
   // --- Chat Assistant ---
   async sendChatMessage(message: string): Promise<any> {
-    const res = await fetch(`${API_BASE_URL}/api/chat`, {
+    const res = await fetch(`${this.baseUrl}/api/chat`, {
       method: 'POST',
       headers: this.getHeaders(true),
       body: JSON.stringify({ message }),

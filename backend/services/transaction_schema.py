@@ -30,6 +30,18 @@ class TransactionStatus(str, Enum):
     MANUAL_REVIEW = "manual_review"
 
 
+class ComplianceVerdict(BaseModel):
+    """Compliance assessment result."""
+    transaction_id: str
+    verdict: str
+    confidence: Optional[float] = 1.0
+    risk_score: float = 0.0
+    applicable_policies: Optional[List[str]] = []
+    reasoning: Optional[str] = ""
+    required_actions: Optional[List[str]] = []
+
+
+
 class TransactionRequest(BaseModel):
     """Schema for incoming transaction from Kinesis stream."""
     

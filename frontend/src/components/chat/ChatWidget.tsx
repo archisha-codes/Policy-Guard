@@ -14,21 +14,14 @@ import { cn } from "@/lib/utils"
 import { GlassCard } from "@/components/ui/GlassCard"
 import { NeonButton } from "@/components/ui/NeonButton"
 import { useToast } from "@/hooks/use-toast"
-import { AuthService } from "@/services/auth"
-
-interface Message {
-  id: string
-  role: "user" | "assistant"
-  content: string
-  timestamp: Date
-}
+import { getApiBaseUrl } from "@/config/apiConfig"
 
 interface ChatWidgetProps {
   className?: string
 }
 
-const CHAT_URL =
-  `${import.meta.env.VITE_API_BASE_URL || "http://localhost:8000"}/api/chat`
+const getChatUrl = () => `${getApiBaseUrl()}/api/chat`
+
 
 export function ChatWidget({ className }: ChatWidgetProps) {
   const [isOpen, setIsOpen] = useState(false)
@@ -81,7 +74,8 @@ export function ChatWidget({ className }: ChatWidgetProps) {
     try {
       const token = AuthService.getToken();
       
-      const res = await fetch(CHAT_URL, {
+      const res = await fetch(getChatUrl(), {
+
         method: "POST",
         headers: {
           "Content-Type": "application/json",

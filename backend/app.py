@@ -41,11 +41,13 @@ app = FastAPI(title="PolicyGuard Enterprise API")
 # CORS (Enable for Frontend)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, specify your frontend URL
-    allow_credentials=True,
-    allow_methods=["*"],
+    allow_origins=["*"],
+    allow_credentials=False,
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
     allow_headers=["*"],
+    expose_headers=["*"],
 )
+
 # --- Service Instantiation (Global) ---
 traffic_gen = TrafficGenerator() 
 drift_detector = PolicyDriftDetector()
@@ -326,11 +328,15 @@ def health_check():
     return {"status": "ok", "system": "PolicyGuard", "timestamp": datetime.utcnow().isoformat()}
 
 @app.post("/api/auth/login")
-def login(request: LoginRequest):
+@app.post("/api/auth/login/")
+@app.post("/api/auth/signup")
+@app.post("/api/auth/signup/")
+def login_or_signup(request: LoginRequest):
     role_map = {
         "admin": Role.ADMIN,
         "compliance_officer": Role.COMPLIANCE_OFFICER,
-        "auditor": Role.AUDITOR
+        "auditor": Role.AUDITOR,
+        "manager": Role.COMPLIANCE_OFFICER
     }
     selected_role = role_map.get(request.role, Role.COMPLIANCE_OFFICER)
     
@@ -342,7 +348,7 @@ def login(request: LoginRequest):
     
     audit_logger.log_auth_event(
         user_id=request.email,
-        action="User Login",
+        action="User Authentication",
         success=True
     )
     
@@ -351,6 +357,7 @@ def login(request: LoginRequest):
         "token_type": "bearer",
         "user": {"email": request.email, "role": selected_role.value}
     }
+
 
 @app.get("/api/transactions")
 def get_transactions(limit: int = 50, offset: int = 0, db: Session = Depends(get_db)):

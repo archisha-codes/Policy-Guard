@@ -7,7 +7,9 @@ for efficient stream processing and load distribution.
 
 import json
 import logging
+import os
 from datetime import datetime
+
 from typing import Dict, Any, Optional
 from decimal import Decimal
 import boto3

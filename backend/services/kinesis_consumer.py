@@ -16,17 +16,28 @@ logger = logging.getLogger("PolicyGuard-Stream")
 logging.basicConfig(level=logging.INFO)
 
 class PolicyStreamProcessor:
-    def __init__(self, stream_name):
+    def __init__(self, stream_name="policyguard-stream", region_name=None):
         self.stream_name = stream_name
-        # Updated region to use AWS_REGION
-        self.kinesis = boto3.client('kinesis', region_name=os.getenv('AWS_REGION', 'ap-south-1'))
+        self.region_name = region_name or os.getenv('AWS_REGION', 'ap-south-1')
+        self.kinesis = boto3.client('kinesis', region_name=self.region_name)
+        self.processed_records = 0
+        self.failed_records = 0
         
         # Initialize Agents
         self.pii_masker = PIIMaskingAgent()
         self.rule_engine = DeterministicRuleEngine()
         self.audit_logger = TamperProofAuditLogger()
 
+    def get_shards(self):
+        response = self.kinesis.describe_stream(StreamName=self.stream_name)
+        if isinstance(response, dict):
+            shards = response.get('StreamDescription', {}).get('Shards', [])
+            return [s['ShardId'] for s in shards if 'ShardId' in s]
+        return ['shardId-000000000000']
+
+
     def process_record(self, record_data):
+
         try:
             txn = json.loads(record_data)
             logger.info(f"Processing Streamed Txn: {txn.get('transaction_id')}")
@@ -99,10 +110,10 @@ class PolicyStreamProcessor:
                 logger.error(f"Stream Error: {e}")
                 time.sleep(5)
 
-    def get_shard_iterator(self):
-        # Helper to get iterator for the first shard
-        response = self.kinesis.describe_stream(StreamName=self.stream_name)
-        shard_id = response['StreamDescription']['Shards'][0]['ShardId']
+    def get_shard_iterator(self, shard_id=None):
+        if not shard_id:
+            response = self.kinesis.describe_stream(StreamName=self.stream_name)
+            shard_id = response['StreamDescription']['Shards'][0]['ShardId']
         iter_response = self.kinesis.get_shard_iterator(
             StreamName=self.stream_name,
             ShardId=shard_id,
@@ -110,6 +121,9 @@ class PolicyStreamProcessor:
         )
         return iter_response['ShardIterator']
 
+TransactionConsumer = PolicyStreamProcessor
+
 if __name__ == "__main__":
+
     processor = PolicyStreamProcessor(stream_name=os.getenv("KINESIS_STREAM_NAME", "policyguard-stream"))
     processor.run()
