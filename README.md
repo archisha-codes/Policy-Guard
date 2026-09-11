@@ -64,23 +64,30 @@ PolicyGuard addresses these challenges through a multi-layered hybrid architectu
 ---
 
 ### 4. Alerts & Notifications Center
-> High-risk transaction alert queue, smurfing/structuring warnings, and escalation management.
+> Real-time compliance alert queue, smurfing/structuring warnings, and officer action buttons (`Approve`, `Email User`, `Resolve`).
 
 ![Alerts and Notifications](docs/images/alerts.png)
 
 ---
 
 ### 5. Policy Drift & Regulatory Amendment Tracking
-> Detects circular amendments and flags historical transaction logs affected by regulatory policy changes.
+> Live monitoring of regulatory circular amendments, simulation triggers, and tracking affected historical transactions.
 
 ![Policy Drift Detection](docs/images/policy_drift.png)
 
 ---
 
 ### 6. Cryptographic Audit Ledger & Reports
-> Immutable append-only audit trail with SHA-256 hash chaining for full regulatory audit readiness.
+> Immutable append-only audit trail with blue lock icons representing SHA-256 hash chaining, database/simulation toggles, and PDF/CSV export capabilities.
 
 ![Cryptographic Audit Logs](docs/images/audit_logs.png)
+
+---
+
+### 7. Regulatory Knowledge Assistant (RAG Chatbot Modal)
+> AI compliance chatbot grounded in official RBI Master Circulars, PMLA Guidelines, and KYC frameworks with inline section citations.
+
+![Regulatory Knowledge Assistant Chatbot](docs/images/chatbot.png)
 
 ---
 
@@ -117,6 +124,10 @@ PolicyGuard addresses these challenges through a multi-layered hybrid architectu
 ### 7. Policy Drift Detection Engine (`services/policy_drift_detector.py`)
 - **What it does**: Monitors regulatory circular amendments and re-evaluates historical transactions.
 - **How it works**: When an RBI circular is updated, the engine scans past transaction logs to identify accounts affected by retroactively changed risk thresholds.
+
+### 8. Regulatory Knowledge Assistant (`components/chat/ChatWidget.tsx`)
+- **What it does**: Interactive compliance assistant providing instant regulatory guidance.
+- **How it works**: Uses RAG context retrieval to answer queries on RBI circulars, KYC limits, and PMLA requirements with cited circular sections.
 
 ---
 
